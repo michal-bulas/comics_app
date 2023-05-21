@@ -1,30 +1,35 @@
+import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-import MainPageList from './src/components/MainPageList';
+import { createStackNavigator } from '@react-navigation/stack';
+import Welcome from './src/screens/Welcome';
+import Home from './src/screens/Home';
+import Details from './src/screens/Details';
 
 const queryClient = new QueryClient();
+const Stack = createStackNavigator();
 
 export default function App() {
 	return (
 		<QueryClientProvider client={queryClient}>
 			<NavigationContainer>
-				<View style={styles.container}>
-					<Text>Open up App.tsx to start working on your app!</Text>
-					<StatusBar style='auto' />
-					<MainPageList />
-				</View>
+				<Stack.Navigator initialRouteName='Welcome'>
+					<Stack.Screen
+						name='Welcome'
+						component={Welcome}
+						options={{ headerShown: false }}
+					/>
+					<Stack.Screen
+						name='Home'
+						component={Home}
+						options={{ headerShown: false }}
+					/>
+					<Stack.Screen
+						name='Details'
+						component={Details}
+					/>
+				</Stack.Navigator>
 			</NavigationContainer>
 		</QueryClientProvider>
 	);
 }
-
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		backgroundColor: '#fff',
-		alignItems: 'center',
-		justifyContent: 'center',
-	},
-});

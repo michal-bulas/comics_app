@@ -1,53 +1,48 @@
 import React from 'react';
-import { View, Text, Image, ActivityIndicator, FlatList } from 'react-native';
-import { useComic, useLatestComic, useComics } from '../hooks/comicHooks';
+import { Text, Image, ActivityIndicator, FlatList, View } from 'react-native';
+import { useLatestComic, useComics } from '../hooks/comicHooks';
 import ComicListItem from './ComicListItem';
 import Divider from './UI/Divider';
-import ListHeader from './UI/ListHeader';
+import TabHeader from './UI/TabHeader';
 
 const MainPageList = () => {
 	const { data: latestComic, isLoading: isLoadingLatest } = useLatestComic();
-	const { data: specificComic, isLoading: isLoadingSpecific } = useComic(614);
-	const comicQueries = useComics(1, 10);
+	const comicsQueries = useComics(1, 10);
+	const isLoadingList = comicsQueries.some(
+		(comic) => comic.status === 'loading'
+	);
 
-	if (isLoadingLatest || isLoadingSpecific) {
+	if (isLoadingLatest || isLoadingList) {
 		return (
 			<ActivityIndicator
 				size='large'
-				color='red'
-				style={{
-					position: 'absolute',
-					alignItems: 'center',
-					justifyContent: 'center',
-					left: 0,
-					right: 0,
-					top: 0,
-					bottom: 0,
-				}}
+				color='orange'
+				className='my-auto'
 			/>
 		);
 	}
 
+	const comicsList = comicsQueries
+		.filter((comic) => comic.status === 'success')
+		.map((comic) => comic.data);
+
 	return (
 		<View>
-			<Text>Latest Comic: {latestComic.num}</Text>
+			<Text className='text-center text-xl'>
+				Latest Comic: {latestComic.num}
+			</Text>
+			<Text className='text-center text-md my-1'>{latestComic.title}</Text>
 			<Image
+				className='h-60 w-60 self-center'
 				source={{ uri: latestComic.img }}
-				style={{ width: 200, height: 200 }}
 			/>
-			<Text>Comic 614: {specificComic.title}</Text>
-			<Image
-				source={{ uri: specificComic.img }}
-				style={{ width: 200, height: 200 }}
-			/>
-			<Text>List of Comics</Text>
-			<FlatList
-				data={comicQueries.map((query) => query.data)}
-				renderItem={ComicListItem}
-				ItemSeparatorComponent={Divider}
-				ListHeaderComponent={ListHeader}
-				keyExtractor={(item) => item.num.toString()}
-			/>
+			<TabHeader>Comics List</TabHeader>
+			{comicsList.map((comic) => (
+				<ComicListItem
+					key={comic.num}
+					item={comic}
+				/>
+			))}
 		</View>
 	);
 };

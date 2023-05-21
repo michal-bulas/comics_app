@@ -1,17 +1,26 @@
-import { View, Text, Image } from 'react-native';
+import { TouchableOpacity, Text } from 'react-native';
 import { ComicTypes } from '../types/ComicTypes';
+import { useNavigation } from '@react-navigation/native';
+import { RootStackParamList } from '../types/RootStackParamList';
+import { StackNavigationProp } from '@react-navigation/stack';
+
 interface ComicItemProps {
 	item: ComicTypes;
 }
 
-const ComicListItem: React.FC<ComicItemProps> = ({ item }) => (
-	<View>
-		<Text>{item.title}</Text>
-		<Image
-			source={{ uri: item.img }}
-			style={{ width: 200, height: 200 }}
-		/>
-	</View>
-);
+type navProp = StackNavigationProp<RootStackParamList, 'Home'>;
+
+const ComicListItem: React.FC<ComicItemProps> = ({ item }) => {
+	const navigation = useNavigation<navProp>();
+
+	return (
+		<TouchableOpacity
+			onPress={() => navigation.navigate('Details', item)}
+			className='my-5'
+		>
+			<Text className='font-bold text-xl'>{item.title}</Text>
+		</TouchableOpacity>
+	);
+};
 
 export default ComicListItem;

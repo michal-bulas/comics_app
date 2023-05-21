@@ -7,8 +7,21 @@ import { useComic, useLatestComic, useComics } from '../../hooks/comicHooks';
 jest.mock('axios');
 
 const mockedAxios = axios as jest.Mocked<typeof axios>;
+const comicNumber = 123;
+const latestComicData = { num: 2778, title: 'Cuisine' };
+const comicsData = [
+	{ num: 12, title: 'Poisson' },
+	{ num: 13, title: 'Canyon' },
+	{ num: 14, title: 'Copyright' },
+	{ num: 15, title: 'Just Alerting You' },
+	{ num: 16, title: 'Monty Python -- Enough' },
+];
 
 describe('comicHooks', () => {
+	beforeEach(() => {
+		jest.useFakeTimers();
+		mockedAxios.get.mockReset();
+	});
 	const wrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => (
 		<QueryClientProvider client={new QueryClient()}>
 			{children}
@@ -16,12 +29,11 @@ describe('comicHooks', () => {
 	);
 
 	it('fetches a comic', async () => {
-		const comicNumber = 123;
 		const comicData = { num: comicNumber, title: 'Centrifugal' };
 
 		mockedAxios.get.mockResolvedValueOnce({ data: comicData });
 
-		const { result } = renderHook(() => useComic(comicNumber), { wrapper });
+		const { result } = renderHook(() => useComic(comicData.num), { wrapper });
 
 		await waitFor(() => expect(result.current.isSuccess).toBeTruthy());
 
@@ -29,8 +41,6 @@ describe('comicHooks', () => {
 	});
 
 	it('fetches the latest comic', async () => {
-		const latestComicData = { num: 2778, title: 'Cuisine' };
-
 		mockedAxios.get.mockResolvedValueOnce({ data: latestComicData });
 
 		const { result } = renderHook(() => useLatestComic(), { wrapper });
@@ -41,14 +51,6 @@ describe('comicHooks', () => {
 	});
 
 	it('fetches a range of comics', async () => {
-		const comicsData = [
-			{ num: 12, title: 'Poisson' },
-			{ num: 13, title: 'Canyon' },
-			{ num: 14, title: 'Copyright' },
-			{ num: 15, title: 'Just Alerting You' },
-			{ num: 16, title: 'Monty Python -- Enough' },
-		];
-
 		comicsData.forEach((comicData) =>
 			mockedAxios.get.mockResolvedValueOnce({ data: comicData })
 		);

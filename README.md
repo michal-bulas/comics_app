@@ -10,3 +10,4 @@ The Comic App is a mobile application that allows users to explore and enjoy the
 - Axios
 - TanStack Query
 - React Navigation
+- Jest

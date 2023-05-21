@@ -1,13 +1,10 @@
-import { View, Text, StatusBar } from 'react-native';
-import MainPageList from '../components/MainPageList';
+import { View } from 'react-native';
+import MainPageContent from '../components/MainPageContent';
 
 const Home = () => {
 	return (
-		<View
-			className='mx-auto h-full'
-			style={{ marginTop: StatusBar.currentHeight }}
-		>
-			<MainPageList />
+		<View className='mx-auto h-full mt-3'>
+			<MainPageContent />
 		</View>
 	);
 };

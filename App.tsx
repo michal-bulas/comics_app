@@ -22,11 +22,26 @@ export default function App() {
 					<Stack.Screen
 						name='Home'
 						component={Home}
-						options={{ headerShown: false }}
+						options={{
+							headerLeft: () => null,
+							headerTitleAlign: 'center',
+							title: 'Comic App',
+							headerStyle: {
+								backgroundColor: '#ff7b00',
+							},
+							headerTintColor: '#fff',
+						}}
 					/>
 					<Stack.Screen
 						name='Details'
 						component={Details}
+						options={{
+							title: 'Return to Home',
+							headerStyle: {
+								backgroundColor: '#ff7b00',
+							},
+							headerTintColor: '#fff',
+						}}
 					/>
 				</Stack.Navigator>
 			</NavigationContainer>

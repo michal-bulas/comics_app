@@ -1,7 +1,10 @@
 import { useQuery, useQueries } from '@tanstack/react-query';
 import axios from 'axios';
 
-const fetchComic = async (comicNumber: number) => {
+const fetchComic = async (comicNumber: number | null) => {
+	if (comicNumber === null) {
+		throw new Error("Comic number can't be null");
+	}
 	const { data } = await axios.get(
 		`https://xkcd.com/${comicNumber}/info.0.json`
 	);
@@ -13,8 +16,10 @@ const fetchLatestComic = async () => {
 	return data;
 };
 
-export const useComic = (comicNumber: number) => {
-	return useQuery(['comic', comicNumber], () => fetchComic(comicNumber));
+export const useComic = (comicNumber: number | null) => {
+	return useQuery(['comic', comicNumber], () => fetchComic(comicNumber), {
+		enabled: comicNumber !== null && comicNumber >= 1 && comicNumber <= 2778,
+	});
 };
 
 export const useComics = (start: number, end: number) => {

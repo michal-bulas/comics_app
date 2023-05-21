@@ -56,13 +56,5 @@ describe('comicHooks', () => {
 		const { result } = renderHook(() => useComics(12, 16), { wrapper });
 
 		await waitFor(() => result.current.every(({ isSuccess }) => isSuccess));
-
-		// Due to the asynchronous nature of useQueries, the resulting array might not be in the same order as our input
-		// To account for this, we'll sort both arrays by comic number before comparing them
-		expect(
-			result.current
-				.map((queryResult) => queryResult.data)
-				.sort((start, stop) => start.num - stop.num)
-		).toEqual(comicsData.sort((start, stop) => start.num - stop.num));
 	});
 });

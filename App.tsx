@@ -36,7 +36,8 @@ export default function App() {
 						name='Details'
 						component={Details}
 						options={{
-							title: 'Return to Home',
+							headerBackTitle: 'Return Home',
+							title: '',
 							headerStyle: {
 								backgroundColor: '#ff7b00',
 							},

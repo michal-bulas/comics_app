@@ -19,6 +19,16 @@ const comicsData = [
 ];
 
 describe('comicHooks', () => {
+	let queryClient: QueryClient;
+
+	beforeEach(() => {
+		queryClient = new QueryClient();
+	});
+
+	afterEach(() => {
+		queryClient.clear();
+		jest.resetAllMocks();
+	});
 	const wrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => (
 		<QueryClientProvider client={new QueryClient()}>
 			{children}

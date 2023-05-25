@@ -3,7 +3,10 @@ import MainPageContent from '../components/MainPageContent';
 
 const Home = () => {
 	return (
-		<View className='mx-auto h-full mt-3'>
+		<View
+			testID='home-view'
+			className='mx-2 h-full mt-3'
+		>
 			<MainPageContent />
 		</View>
 	);
